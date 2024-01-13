@@ -7,4 +7,4 @@ A python web-application that displays an interactive world map, and allows user
 - Dash
 - JS
 - World map
-
+- Heat map for high relative news coverage
