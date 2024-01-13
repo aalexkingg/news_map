@@ -3,6 +3,8 @@ A python web-application that displays an interactive world map, and allows user
 
 geojson from https://github.com/datasets/geo-countries/blob/master/data/countries.geojson
 
+will need to branch off ironguard/news for news of each country
+
 ## TODO
 - Flask
 - Plotly
