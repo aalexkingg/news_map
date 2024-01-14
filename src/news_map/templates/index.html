@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -9,13 +8,7 @@
     <p>Testing</p>
 
     <div id="plot"></div>
+    <script type="text/javascript" href="index.ts"></script>
 
-    <script type="text/javascript">
-
-        var graphs = {{lines_JSON | safe}};
-
-        Plotly.plot("plot", graphs, {});
-
-    </script>
 </body>
 </html>

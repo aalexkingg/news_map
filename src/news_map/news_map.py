@@ -30,6 +30,18 @@ addresses.insert_once({
 # set directories (templates, assets, etc)
 ASSETS_DIR = os.path.join(Path(__file__).parent.parent.parent, "assets")
 
+countries = json.load(urlopen('https://github.com/plotly/datasets/raw/master/geojson-counties-fips.json'))
+
+print(countries["features"][0])
+
+fig = px.choropleth(
+    data_frame=None,
+    geojson=countries,
+    scope='world',
+    labels={'properties.NAME': 'Name'}
+)
+fig.update_traces(marker_line_width=1)
+fig.show()
 
 @app.before_first_request
 def startup():
@@ -57,18 +69,7 @@ def get_all_points():
 @app.route('/')
 def main():
     data = ASSETS_DIR + r"\data\countries.geojson"
-    # countries = json.load(open(data))
-    countries = json.load(urlopen('https://github.com/plotly/datasets/raw/master/geojson-counties-fips.json'))
 
-    print(countries["features"][0])
-
-    fig = px.choropleth(
-        data_frame=None,
-        geojson=countries,
-        scope='africa',
-        labels={'NAME': 'Name'}
-    )
-    fig.show()
     return
 
 
