@@ -22,6 +22,8 @@ Using Typescript as front end:
     Display data to see of country, with selected highlighting
     Possibly have to open in new tab if getting too crowded
     Have summary tab displayed, but below have "show details" option which opens new tab
+    Could also be a slide out sidebar
+    Basic country info too
 
 Might have to change geojson to json?
 
