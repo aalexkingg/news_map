@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
     <p>Testing</p>
 
+    <div id="plot"></div>
 
-    <script>
+    <script type="text/javascript">
 
+        var graphs = {{lines_JSON | safe}};
 
+        Plotly.plot("plot", graphs, {});
 
     </script>
 </body>

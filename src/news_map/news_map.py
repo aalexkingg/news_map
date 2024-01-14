@@ -1,11 +1,19 @@
-import flask.app
-from flask import Flask, render_template, jsonify
 import os
 from pymongo import MongoClient
 from pathlib import Path
 import json
-import plotly.express as px
 import pandas as pd
+from urllib.request import urlopen
+from plotly import (
+    express as px,
+    utils
+)
+from flask import (
+    Flask,
+    render_template,
+    jsonify
+)
+
 
 app = Flask(__name__)
 client = MongoClient()
@@ -22,15 +30,8 @@ addresses.insert_once({
 # set directories (templates, assets, etc)
 ASSETS_DIR = os.path.join(Path(__file__).parent.parent.parent, "assets")
 
-data = ASSETS_DIR + r"\data\countries.geojson"
-countries = json.load(open(data))
 
-print(countries["features"][0])
-
-fig = px.choropleth(data_frame=None, geojson=countries)
-fig.show()
-
-@flask.app.setupmethod
+@app.before_first_request
 def startup():
     # add geojson data to db for easier processing
     data = ASSETS_DIR + r"\data\countries.geojson"
@@ -55,7 +56,20 @@ def get_all_points():
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+    data = ASSETS_DIR + r"\data\countries.geojson"
+    # countries = json.load(open(data))
+    countries = json.load(urlopen('https://github.com/plotly/datasets/raw/master/geojson-counties-fips.json'))
+
+    print(countries["features"][0])
+
+    fig = px.choropleth(
+        data_frame=None,
+        geojson=countries,
+        scope='africa',
+        labels={'NAME': 'Name'}
+    )
+    fig.show()
+    return
 
 
 if __name__ == "__main__":
