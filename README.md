@@ -1,6 +1,10 @@
 # news_map
 A python web-application that displays an interactive world map, and allows users to see current news topics about the region/country specified
 
+requirements:
+    python
+    nodeJS
+
 geojson from https://github.com/datasets/geo-countries/blob/master/data/countries.geojson
 
 will need to branch off ironguard/news for news of each country
@@ -18,6 +22,8 @@ Using Typescript as front end:
     Display data to see of country, with selected highlighting
     Possibly have to open in new tab if getting too crowded
     Have summary tab displayed, but below have "show details" option which opens new tab
+
+Might have to change geojson to json?
 
 ## TODO
 - Flask
