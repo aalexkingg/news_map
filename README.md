@@ -33,5 +33,5 @@ Might have to change geojson to json?
 - Dash
 - JS
 - World map
-- Heat map for high relative news coverage
+- Heat map for high relative news coverage like snapchat
 

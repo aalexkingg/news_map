@@ -43,10 +43,9 @@ fig.update_traces(marker_line_width=1)
 fig.show()
 """
 
+
 @app.before_first_request
 def startup():
-    # add geojson data to db for easier processing
-    data = ASSETS_DIR + r"\data\countries.geojson"
     print("start")
 
 
