@@ -1,12 +1,11 @@
 
-const domain = "127.0.0.1:5000";
 
-const get_points = async function (domain: string) {
-    return await fetch(domain + "/points")
+const get_points = async function() {
+    return await fetch("/points")
         .then((response) => response.json());
-}
+};
 
-const points = get_points(domain);
+const points = get_points();
 
 console.log(points);
 
