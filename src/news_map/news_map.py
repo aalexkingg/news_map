@@ -30,10 +30,9 @@ addresses.insert_once({
 # set directories (templates, assets, etc)
 ASSETS_DIR = os.path.join(Path(__file__).parent.parent.parent, "assets")
 
+"""
 countries = json.load(urlopen('https://github.com/plotly/datasets/raw/master/geojson-counties-fips.json'))
-
 print(countries["features"][0])
-
 fig = px.choropleth(
     data_frame=None,
     geojson=countries,
@@ -42,6 +41,7 @@ fig = px.choropleth(
 )
 fig.update_traces(marker_line_width=1)
 fig.show()
+"""
 
 @app.before_first_request
 def startup():
@@ -52,7 +52,6 @@ def startup():
 
 @app.route('/points', methods=['GET'])
 def get_all_points():
-    points = []
     """
     for address in addresses.find({'type': 'Point'}):
         points.append({
@@ -64,13 +63,14 @@ def get_all_points():
         })
     return jsonify(points)
     """
+    return jsonify(open(ASSETS_DIR + r"\data\countries.geojson"))
 
 
 @app.route('/')
 def main():
     data = ASSETS_DIR + r"\data\countries.geojson"
 
-    return
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
