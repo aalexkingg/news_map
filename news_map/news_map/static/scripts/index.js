@@ -5,7 +5,7 @@ async function get_points() {
         if (!response.ok) {
             throw new Error(response.statusText);
         }
-        return JSON.stringify(response);
+        return JSON.stringify(response.body);
     });
 }
 const points = get_points();
