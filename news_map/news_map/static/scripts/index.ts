@@ -1,9 +1,14 @@
 
 
-const get_points = async function() {
+async function get_points() {
     return await fetch("/points")
-        .then((response) => response.json());
-};
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText)
+            }
+            return JSON.stringify(response);
+        });
+}
 
 const points = get_points();
 

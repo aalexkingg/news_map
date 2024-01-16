@@ -62,7 +62,7 @@ def get_all_points():
         })
     return jsonify(points)
     """
-    return jsonify(open(ASSETS_DIR + r"\data\countries.geojson"))
+    return jsonify(open(ASSETS_DIR + r"\data\countries.geojson").readlines())
 
 
 @app.route('/')

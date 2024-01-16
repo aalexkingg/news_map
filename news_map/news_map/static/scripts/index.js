@@ -1,8 +1,12 @@
 "use strict";
-const dom = "127.0.0.1:5000";
-const get_points = async function (domain) {
-    return await fetch(domain + "/points")
-        .then((response) => response.json());
-};
-const points = get_points(dom);
+async function get_points() {
+    return await fetch("/points")
+        .then(response => {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return JSON.stringify(response);
+    });
+}
+const points = get_points();
 console.log(points);
