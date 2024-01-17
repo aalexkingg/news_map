@@ -46,7 +46,7 @@ fig.show()
 
 @app.before_first_request
 def startup():
-    print("start")
+    print("init")
 
 
 @app.route('/points', methods=['GET'])
