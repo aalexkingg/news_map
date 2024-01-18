@@ -1,9 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const axios_1 = __importDefault(require("axios"));
+export {};
 /*
 async function get_points() {
     return await fetch("/points")
@@ -15,23 +10,28 @@ async function get_points() {
             return JSON.stringify(response.body);
         });
 }
-*/
-async function fetchJSON(url) {
+
+async function fetchJSON(url: string) {
     try {
-        const response = await axios_1.default.get(url);
+        const response = await axios.get(url);
+
         if (response.status >= 200 && response.status < 300) {
             const data = JSON.parse(response.data);
-            console.log("Response: ", data);
-        }
-        else {
+
+            //console.log("Response: ", data);
+            return data;
+        } else {
             console.error("Request failed with status: ", response.status);
         }
-    }
-    catch (error) {
+    } catch (error) {
         // @ts-ignore
         console.error("Error fetching data: ", error.message);
     }
 }
-//const points = get_points();
+*/
 //console.log(points);
-fetchJSON("/points");
+//const data = fetchJSON("/points");
+//console.log(pointsJSON.default.featureSettings);
+//let rawData = fs.readFileSync('../../../../assets/data/countries.json', 'utf8');
+//let jsonData = JSON.parse(rawData);
+//console.log(jsonData);

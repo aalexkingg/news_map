@@ -62,14 +62,15 @@ def get_all_points():
         })
     return jsonify(points)
     """
-    return jsonify(open(ASSETS_DIR + r"\data\countries.geojson").readlines())
+    print(jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines()))
+    return jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines())
 
 
 @app.route('/')
 def main():
-    data = ASSETS_DIR + r"\data\countries.geojson"
-
-    return render_template('index.html')
+    countries = ASSETS_DIR + r"\data\countries.json"
+    data = [x.strip("\n") for x in open(countries).readlines()]
+    return render_template('index.html', points=data)
 
 
 if __name__ == "__main__":
