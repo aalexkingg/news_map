@@ -62,7 +62,7 @@ def get_all_points():
         })
     return jsonify(points)
     """
-    print(jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines()))
+    #print(jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines()))
     return jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines())
 
 
