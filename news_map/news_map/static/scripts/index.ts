@@ -1,8 +1,28 @@
+// imports
 
+
+// constants
+const ocean: string = "#00BFFF";
+
+
+// map canvas element
 const canvas = document.getElementById(
     'map'
 ) as HTMLCanvasElement | null;
 
-canvas?.setAttribute("style", "background-color: #00BFFF;");
+// Generate map
+async function LoadMap(): Promise<void> {
+
+}
+
+function LoadDisplay(): void {
+    // set background
+    canvas?.setAttribute("style", `background-color: ${ocean};`);
+
+}
+
+
+
+
 
 
