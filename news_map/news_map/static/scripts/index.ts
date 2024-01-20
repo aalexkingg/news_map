@@ -5,21 +5,51 @@
 const ocean: string = "#00BFFF";
 
 
-// map canvas element
-const canvas = document.getElementById(
-    'map'
-) as HTMLCanvasElement | null;
+class MapApp {
+    private canvas: HTMLCanvasElement | null;
 
-// Generate map
-async function LoadMap(): Promise<void> {
+    private clickX: number = -1;
+    private clickY: number = -1;
+
+    constructor() {
+        // map canvas element
+        let canvas = document.getElementById('map') as HTMLCanvasElement | null;
+        // set background
+        canvas?.setAttribute("style", `background-color: ${ocean};`);
+
+
+        this.canvas = canvas;
+
+
+
+    }
+
+    private drawMap() {
+
+    }
+
+    private addClick(x: number, y:number) {
+        this.clickX = x;
+        this.clickY = y;
+    }
+
+    private cleanCanvas() {
+        // redraw map
+        this.drawMap();
+        this.clickX = -1;
+        this.clickY = -1;
+    }
+
+    private pressEventHandler = (e: MouseEvent | TouchEvent) => {
+        let X = e as TouchEvent
+        let Y
+    }
 
 }
 
-function LoadDisplay(): void {
-    // set background
-    canvas?.setAttribute("style", `background-color: ${ocean};`);
+new MapApp();
 
-}
+
 
 
 
