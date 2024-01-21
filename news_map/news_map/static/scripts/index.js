@@ -2,12 +2,14 @@
 // imports
 // constants
 const darkTheme = false;
+const test_colour = "#00BFFF";
 const ocean_colour = !darkTheme ? "#00BFFF" : "black";
 const country_colour = "";
 const border_colour = "";
 const highlighted_colour = "";
 class MapApp {
     constructor() {
+        this.points = JSON.parse("");
         this.clickX = -1;
         this.clickY = -1;
         this.pressEventHandler = (e) => {
@@ -25,22 +27,24 @@ class MapApp {
         const response = await fetch("/points")
             .then(function (response) {
             // parse response to json data
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            if (response.status >= 200 && response.status < 300) {
+            if (response.ok && response.status >= 200 && response.status < 300) {
                 return response.json();
+            }
+            else {
+                throw new Error(response.statusText);
             }
         }).then(function (data) {
             // Trim and join array of strings and parse to json
-            return data;
+            console.log(data);
+            let d = JSON.parse(data.map((a) => a.trim()).join(""));
+            console.log(d);
+            return d;
         });
         return [];
     }
     async drawMap() {
         let data = await this.getMapData();
-        let d = JSON.parse(data.map((a) => a.trim()).join(""));
-        console.log(d);
+        console.log(data);
     }
     addClick(x, y) {
         this.clickX = x;

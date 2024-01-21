@@ -3,6 +3,7 @@
 
 // constants
 const darkTheme: boolean = false;
+const test_colour: string = "#00BFFF";
 
 const ocean_colour: string = !darkTheme ? "#00BFFF" : "black";
 const country_colour: string = "";
@@ -11,6 +12,8 @@ const highlighted_colour: string = "";
 
 class MapApp {
     private canvas: HTMLCanvasElement | null;
+
+    private points: JSON = JSON.parse("");
 
     private clickX: number = -1;
     private clickY: number = -1;
@@ -26,27 +29,31 @@ class MapApp {
         this.drawMap();
     }
 
-    private async getMapData(): Promise<string[]> {
+    private async getMapData() {
         const response = await fetch("/points")
-            .then(function(response) {
+            .then(function(response: Response) {
                 // parse response to json data
-                if (!response.ok) {
-                    throw new Error(response.statusText)
-                }
-                if (response.status >= 200 && response.status < 300) {
+                if (response.ok && response.status >= 200 && response.status < 300) {
                     return response.json();
+                }
+                else {
+                    throw new Error(response.statusText);
                 }
         }).then(function(data: string[]) {
             // Trim and join array of strings and parse to json
-            return data;
+            console.log(data);
+            let d = JSON.parse(data.map((a: string) => a.trim()).join(""));
+
+            console.log(d);
+            return d;
         });
         return [];
     }
 
     private async drawMap() {
         let data: string[] = await this.getMapData()
-        let d = JSON.parse(data.map((a) => a.trim()).join(""));
-        console.log(d);
+        console.log(data);
+
     }
 
     private addClick(x: number, y:number) {
