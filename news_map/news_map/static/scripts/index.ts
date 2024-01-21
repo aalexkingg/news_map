@@ -24,8 +24,12 @@ class MapApp {
 
     }
 
-    private drawMap() {
+    private getMap() {
+        //fetch("/points")
+    }
 
+    private drawMap() {
+        //const data = this.getMap();
     }
 
     private addClick(x: number, y:number) {
