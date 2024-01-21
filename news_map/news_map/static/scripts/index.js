@@ -9,9 +9,9 @@ const border_colour = "";
 const highlighted_colour = "";
 class MapApp {
     constructor() {
-        this.points = JSON.parse("");
         this.clickX = -1;
         this.clickY = -1;
+        this.map = {};
         this.pressEventHandler = (e) => {
             //let X = e as TouchEvent
             //let Y
@@ -33,18 +33,25 @@ class MapApp {
             else {
                 throw new Error(response.statusText);
             }
-        }).then(function (data) {
+        }).then((data) => {
             // Trim and join array of strings and parse to json
-            console.log(data);
-            let d = JSON.parse(data.map((a) => a.trim()).join(""));
-            console.log(d);
-            return d;
+            let points = JSON.parse(data.map((a) => a.trim()).join(""));
+            for (var index in points.features.length) {
+                this.map[points.features[index].properties.ADMIN] = points.features[0].geometry.coordinates[0][0];
+            }
+            console.log(points.features.length);
+            // [Long, Lat] (idk why they are stored the wrong way around?)
+            console.log(points);
+            console.log(points.features[0].properties);
+            console.log(points.features[0].geometry.coordinates);
+            for (let item of this.map) {
+            }
         });
-        return [];
     }
-    async drawMap() {
-        let data = await this.getMapData();
-        console.log(data);
+    drawMap() {
+        var _a;
+        this.getMapData();
+        const ctx = (_a = this.canvas) === null || _a === void 0 ? void 0 : _a.getContext("2d");
     }
     addClick(x, y) {
         this.clickX = x;

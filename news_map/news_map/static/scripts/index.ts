@@ -1,6 +1,11 @@
 // imports
 
 
+
+interface IDictionary extends Iterable<number> {
+    [key: string]: number[]
+}
+
 // constants
 const darkTheme: boolean = false;
 const test_colour: string = "#00BFFF";
@@ -13,17 +18,16 @@ const highlighted_colour: string = "";
 class MapApp {
     private canvas: HTMLCanvasElement | null;
 
-    private points: JSON = JSON.parse("");
-
     private clickX: number = -1;
     private clickY: number = -1;
+
+    private map: { string: number[] } = {};
 
     constructor() {
         // map canvas element
         let canvas = document.getElementById('map') as HTMLCanvasElement | null;
         // set background
         canvas?.setAttribute("style", `background-color: ${ocean_colour};`);
-
 
         this.canvas = canvas;
         this.drawMap();
@@ -39,20 +43,35 @@ class MapApp {
                 else {
                     throw new Error(response.statusText);
                 }
-        }).then(function(data: string[]) {
+        }).then((data: string[]) => {
             // Trim and join array of strings and parse to json
-            console.log(data);
-            let d = JSON.parse(data.map((a: string) => a.trim()).join(""));
+            let points = JSON.parse(data.map((a: string) => a.trim()).join(""));
 
-            console.log(d);
-            return d;
+            for (var index in points.features.length) {
+                this.map[points.features[index].properties.ADMIN] = points.features[0].geometry.coordinates[0][0]
+            }
+
+            console.log(points.features.length);
+
+            // [Long, Lat] (idk why they are stored the wrong way around?)
+            console.log(points);
+
+            console.log(points.features[0].properties);
+            console.log(points.features[0].geometry.coordinates);
+
+            for (let item of this.map) {
+
+            }
+
         });
-        return [];
     }
 
-    private async drawMap() {
-        let data: string[] = await this.getMapData()
-        console.log(data);
+    private drawMap() {
+        this.getMapData()
+
+        const ctx = this.canvas?.getContext("2d");
+
+
 
     }
 
