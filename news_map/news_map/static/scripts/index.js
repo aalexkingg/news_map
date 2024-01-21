@@ -31,13 +31,13 @@ class MapApp {
             data.forEach((value, index) => {
                 value.replace('\\n', '').trimStart().trimEnd();
             });
-            console.log(data);
-            //console.log(JSON.parse(data[0]));
-            return data;
+            // Trim and join array of strings and parse to json
+            return JSON.parse(data.map((a) => a.trim()).join(""));
         });
     }
     drawMap() {
         let data = this.getMapData();
+        console.log(data);
     }
     addClick(x, y) {
         this.clickX = x;

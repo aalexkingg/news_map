@@ -36,16 +36,14 @@ class MapApp {
             data.forEach((value, index) => {
                 value.replace('\\n', '').trimStart().trimEnd();
             })
-            let d = data.map((a) => a.trim()).join("");
-            console.log(d);
-            //console.log(JSON.parse(data[0]));
-            return data;
+            // Trim and join array of strings and parse to json
+            return JSON.parse(data.map((a) => a.trim()).join(""));
         });
-
     }
 
     private drawMap() {
         let data = this.getMapData();
+        console.log(data);
     }
 
     private addClick(x: number, y:number) {
