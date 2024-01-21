@@ -9,9 +9,7 @@ const border_colour = "";
 const highlighted_colour = "";
 class MapApp {
     constructor() {
-        this.clickX = -1;
-        this.clickY = -1;
-        this.map = {};
+        var _a;
         this.pressEventHandler = (e) => {
             //let X = e as TouchEvent
             //let Y
@@ -20,8 +18,11 @@ class MapApp {
         let canvas = document.getElementById('map');
         // set background
         canvas === null || canvas === void 0 ? void 0 : canvas.setAttribute("style", `background-color: ${ocean_colour};`);
+        this.clickX = -1;
+        this.clickY = -1;
         this.canvas = canvas;
-        this.drawMap();
+        this.ctx = (_a = this.canvas) === null || _a === void 0 ? void 0 : _a.getContext("2d");
+        this.getMapData();
     }
     async getMapData() {
         const response = await fetch("/points")
@@ -37,29 +38,26 @@ class MapApp {
             // Trim and join array of strings and parse to json
             let points = JSON.parse(data.map((a) => a.trim()).join(""));
             for (var index in points.features.length) {
-                this.map[points.features[index].properties.ADMIN] = points.features[0].geometry.coordinates[0][0];
-            }
-            console.log(points.features.length);
-            // [Long, Lat] (idk why they are stored the wrong way around?)
-            console.log(points);
-            console.log(points.features[0].properties);
-            console.log(points.features[0].geometry.coordinates);
-            for (let item of this.map) {
+                this.drawMap(points.features[index].properties.ADMIN, points.features[index].geometry.coordinates[0][0]);
             }
         });
     }
-    drawMap() {
+    drawMap(name, coords) {
         var _a;
-        this.getMapData();
-        const ctx = (_a = this.canvas) === null || _a === void 0 ? void 0 : _a.getContext("2d");
+        (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.beginPath();
+        //this.ctx?.moveTo(coords[1], coords[0]);
+        // [Long, Lat] (idk why they are stored the wrong way around?)
+        for (var coord of coords.slice(1)) {
+            //this.ctx?.lineTo(coord[1], coord[0]);
+            console.log(coord);
+        }
     }
     addClick(x, y) {
         this.clickX = x;
         this.clickY = y;
     }
     cleanCanvas() {
-        // redraw map
-        this.drawMap();
+        // redraw map/remove highlighting
         this.clickX = -1;
         this.clickY = -1;
     }

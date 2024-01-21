@@ -17,20 +17,25 @@ const highlighted_colour: string = "";
 
 class MapApp {
     private canvas: HTMLCanvasElement | null;
+    private ctx: CanvasRenderingContext2D | null;
 
-    private clickX: number = -1;
-    private clickY: number = -1;
-
-    private map: { string: number[] } = {};
+    private clickX: number;
+    private clickY: number;
 
     constructor() {
         // map canvas element
         let canvas = document.getElementById('map') as HTMLCanvasElement | null;
+
         // set background
         canvas?.setAttribute("style", `background-color: ${ocean_colour};`);
 
+        this.clickX = -1
+        this.clickY = -1;
+
         this.canvas = canvas;
-        this.drawMap();
+        this.ctx = this.canvas?.getContext("2d") as CanvasRenderingContext2D | null;
+
+        this.getMapData();
     }
 
     private async getMapData() {
@@ -48,30 +53,20 @@ class MapApp {
             let points = JSON.parse(data.map((a: string) => a.trim()).join(""));
 
             for (var index in points.features.length) {
-                this.map[points.features[index].properties.ADMIN] = points.features[0].geometry.coordinates[0][0]
+                this.drawMap(points.features[index].properties.ADMIN, points.features[index].geometry.coordinates[0][0]);
             }
-
-            console.log(points.features.length);
-
-            // [Long, Lat] (idk why they are stored the wrong way around?)
-            console.log(points);
-
-            console.log(points.features[0].properties);
-            console.log(points.features[0].geometry.coordinates);
-
-            for (let item of this.map) {
-
-            }
-
         });
     }
 
-    private drawMap() {
-        this.getMapData()
+    private drawMap(name: string, coords: number[]) {
+        this.ctx?.beginPath();
+        //this.ctx?.moveTo(coords[1], coords[0]);
 
-        const ctx = this.canvas?.getContext("2d");
-
-
+        // [Long, Lat] (idk why they are stored the wrong way around?)
+        for (var coord of coords.slice(1) as number[]) {
+            //this.ctx?.lineTo(coord[1], coord[0]);
+            console.log(coord);
+        }
 
     }
 
@@ -81,8 +76,7 @@ class MapApp {
     }
 
     private cleanCanvas() {
-        // redraw map
-        this.drawMap();
+        // redraw map/remove highlighting
         this.clickX = -1;
         this.clickY = -1;
     }
