@@ -25,19 +25,22 @@ class MapApp {
         const response = await fetch("/points")
             .then(function (response) {
             // parse response to json data
-            return response.json();
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            if (response.status >= 200 && response.status < 300) {
+                return response.json();
+            }
         }).then(function (data) {
-            // print data
-            data.forEach((value, index) => {
-                value.replace('\\n', '').trimStart().trimEnd();
-            });
             // Trim and join array of strings and parse to json
-            return JSON.parse(data.map((a) => a.trim()).join(""));
+            return data;
         });
+        return [];
     }
-    drawMap() {
-        let data = this.getMapData();
-        console.log(data);
+    async drawMap() {
+        let data = await this.getMapData();
+        let d = JSON.parse(data.map((a) => a.trim()).join(""));
+        console.log(d);
     }
     addClick(x, y) {
         this.clickX = x;

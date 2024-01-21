@@ -26,24 +26,27 @@ class MapApp {
         this.drawMap();
     }
 
-    private async getMapData() {
+    private async getMapData(): Promise<string[]> {
         const response = await fetch("/points")
             .then(function(response) {
                 // parse response to json data
-                return response.json();
+                if (!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                if (response.status >= 200 && response.status < 300) {
+                    return response.json();
+                }
         }).then(function(data: string[]) {
-            // print data
-            data.forEach((value, index) => {
-                value.replace('\\n', '').trimStart().trimEnd();
-            })
             // Trim and join array of strings and parse to json
-            return JSON.parse(data.map((a) => a.trim()).join(""));
+            return data;
         });
+        return [];
     }
 
-    private drawMap() {
-        let data = this.getMapData();
-        console.log(data);
+    private async drawMap() {
+        let data: string[] = await this.getMapData()
+        let d = JSON.parse(data.map((a) => a.trim()).join(""));
+        console.log(d);
     }
 
     private addClick(x: number, y:number) {
