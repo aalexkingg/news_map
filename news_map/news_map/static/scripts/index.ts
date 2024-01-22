@@ -23,7 +23,7 @@ const lat_max: number = 90;
 
 class MapApp {
     private canvas: HTMLCanvasElement | null;
-    private ctx: CanvasRenderingContext2D | null;
+    //private ctx: CanvasRenderingContext2D | null;
 
     private clickX: number;
     private clickY: number;
@@ -42,7 +42,8 @@ class MapApp {
         this.clickY = -1;
 
         this.canvas = canvas;
-        this.ctx = this.canvas?.getContext("2d") as CanvasRenderingContext2D | null;
+        //this.ctx = this.canvas?.getContext("2d") as CanvasRenderingContext2D | null;
+        //this.ctx?.fillStyle = country_colour;
 
         this.getMapData();
     }
@@ -63,28 +64,32 @@ class MapApp {
             // Trim and join array of strings and parse to json
             let points = JSON.parse(data.map((a: string) => a.trim()).join(""));
 
-            for (var index in points.features.length) {
-                console.log(index);
+            for (let index: number = 0; index < points.features.length; index++) {
                 this.drawMap(points.features[index].properties.ADMIN, points.features[index].geometry.coordinates[0][0]);
             }
         });
     }
 
-    private drawMap(name: string, coords: number[]) {
+    private drawMap(name: string, coords: number[][]) {
+        let ctx = this.canvas?.getContext("2d") as CanvasRenderingContext2D;
+        ctx.fillStyle = country_colour;
         let [x0, y0] = this.convertCoords(coords[0]);
-        this.ctx?.beginPath();
-        //this.ctx?.moveTo(x0, y0);
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
 
         // [Long, Lat] (idk why they are stored the wrong way around?)
-        for (var coord of coords.slice(1) as number[]) {
+        for (var coord of coords.slice(1) as Array<Array<number>>) {
             var [x, y] = this.convertCoords(coord);
-            //this.ctx?.lineTo(x, y);
-            console.log(coord);
+            console.log(x, y);
+            ctx.lineTo(x, y);
+            //console.log(coord);
         }
+        ctx.stroke();
+        ctx.closePath();
 
     }
 
-    private convertCoords(coords: number[]): number[] {
+    private convertCoords(coords: Array<number>): number[] {
         // [Long, Lat]
         let x: number = (coords[0] - lon_min) / (lon_max - lon_min) * this.display_width;
         let y: number = (coords[1] - lat_min) / (lat_max - lat_min) * this.display_height;
