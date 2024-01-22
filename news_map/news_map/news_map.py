@@ -72,7 +72,7 @@ def get_all_points():
 
     :return:
     """
-    return jsonify(open(ASSETS_DIR + r"\data\countries.json").readlines())
+    return jsonify(open(ASSETS_DIR + r"\data\test.json").readlines())
 
 
 @app.route('/')

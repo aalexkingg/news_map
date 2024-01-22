@@ -38,6 +38,7 @@ class MapApp {
             // Trim and join array of strings and parse to json
             let points = JSON.parse(data.map((a) => a.trim()).join(""));
             for (var index in points.features.length) {
+                console.log(index);
                 this.drawMap(points.features[index].properties.ADMIN, points.features[index].geometry.coordinates[0][0]);
             }
         });

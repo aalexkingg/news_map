@@ -15,12 +15,21 @@ const country_colour: string = "";
 const border_colour: string = "";
 const highlighted_colour: string = "";
 
+const lon_min: number = -180;
+const lon_max: number = 180;
+const lat_min: number = -90;
+const lat_max: number = 90;
+
+
 class MapApp {
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
 
     private clickX: number;
     private clickY: number;
+
+    private display_width: number = window.screen.width;
+    private display_height: number = window.screen.height;
 
     constructor() {
         // map canvas element
@@ -38,6 +47,8 @@ class MapApp {
         this.getMapData();
     }
 
+    // Map coords need to be calculated as canvas coords start at 0,0 from top left
+
     private async getMapData() {
         const response = await fetch("/points")
             .then(function(response: Response) {
@@ -53,21 +64,31 @@ class MapApp {
             let points = JSON.parse(data.map((a: string) => a.trim()).join(""));
 
             for (var index in points.features.length) {
+                console.log(index);
                 this.drawMap(points.features[index].properties.ADMIN, points.features[index].geometry.coordinates[0][0]);
             }
         });
     }
 
     private drawMap(name: string, coords: number[]) {
+        let [x0, y0] = this.convertCoords(coords[0]);
         this.ctx?.beginPath();
-        //this.ctx?.moveTo(coords[1], coords[0]);
+        //this.ctx?.moveTo(x0, y0);
 
         // [Long, Lat] (idk why they are stored the wrong way around?)
         for (var coord of coords.slice(1) as number[]) {
-            //this.ctx?.lineTo(coord[1], coord[0]);
+            var [x, y] = this.convertCoords(coord);
+            //this.ctx?.lineTo(x, y);
             console.log(coord);
         }
 
+    }
+
+    private convertCoords(coords: number[]): number[] {
+        // [Long, Lat]
+        let x: number = (coords[0] - lon_min) / (lon_max - lon_min) * this.display_width;
+        let y: number = (coords[1] - lat_min) / (lat_max - lat_min) * this.display_height;
+        return [x, y];
     }
 
     private addClick(x: number, y:number) {
