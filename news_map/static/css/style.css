@@ -1,0 +1,39 @@
+#container {
+  display: flex;
+}
+
+#map {
+  height: 100vh;
+  flex: 1;
+  transition: flex 0.5s;
+}
+
+#sidebar {
+  width: 300px;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  position: relative;
+  right: -300px; /* Start hidden */
+  transition: right 0.5s;
+}
+
+#sidebar.visible {
+  right: 0; /* Slide in */
+}
+
+#map.full {
+  flex: 1 1 100%;
+}
+
+#country-info {
+  margin-top: 20px;
+}
+
+#country-info h3 {
+  margin-top: 0;
+}
+
+#info-content {
+  margin-top: 10px;
+}

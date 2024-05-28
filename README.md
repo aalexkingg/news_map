@@ -27,6 +27,12 @@ Using Typescript as front end:
 
 Might have to change geojson to json?
 
+Global database will need to be maintained. News_scrape will need to running near constantly to keep it real time. While the news map will be constantly fetching from database, updating results list and updating heatmap.
+Heatmap should be based on how much attention stories are getting, not how important, this can either be purely based on number of news stories, or (if possible) readership 
+
+Database stories should be removed from database after 1 week?
+
+
 ## TODO
 - Flask
 - Plotly

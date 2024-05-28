@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>World Map</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+    }
+    .leaflet-popup-content-wrapper {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script>
+    // Initialize the map
+    var map = L.map('map', {
+      center: [20, 0],
+      zoom: 2,
+      worldCopyJump: true, // Enable infinite horizontal scrolling
+    });
+
+    // Add a tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Style for highlighted country
+    var highlightStyle = {
+      color: '#ff7800',
+      weight: 5,
+      opacity: 0.65
+    };
+
+    var geojsonLayer; // Variable to hold GeoJSON layer
+    var lastClickedLayer; // Variable to store the last clicked country layer
+
+    // Function to fetch country info
+    function fetchCountryInfo(countryName) {
+      return fetch(`/country-info?name=${countryName}`)
+        .then(response => response.json());
+    }
+
+    // Function to fetch heatmap data
+    function fetchHeatmapData() {
+      return fetch('/heatmap-data')
+        .then(response => response.json());
+    }
+
+    // Add a GeoJSON layer with country borders
+    fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
+      .then(response => response.json())
+      .then(data => {
+        geojsonLayer = L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            layer.on({
+              click: function (e) {
+                if (lastClickedLayer) {
+                  geojsonLayer.resetStyle(lastClickedLayer); // Reset style of previously clicked country
+                }
+                layer.setStyle(highlightStyle); // Highlight the clicked country
+                lastClickedLayer = layer; // Store reference to the clicked country
+
+                // Fetch country info from the server
+                fetchCountryInfo(feature.properties.name)
+                  .then(data => {
+                    if (data.error) {
+                      layer.bindPopup('Country information not found').openPopup();
+                    } else {
+                      var popupContent = `
+                        <strong>Country:</strong> ${data.name}<br>
+                        <strong>Population:</strong> ${data.population}<br>
+                        <strong>Area:</strong> ${data.area} sq km<br>
+                        <strong>Entries:</strong> ${data.count}
+                      `;
+                      layer.bindPopup(popupContent).openPopup();
+                    }
+                  });
+              }
+            });
+          }
+        }).addTo(map);
+
+        // Fetch heatmap data and add heatmap layer
+        fetchHeatmapData().then(heatmapData => {
+          var heatPoints = heatmapData.map(country => {
+            // For demonstration, assume lat/lng for each country is stored or calculated somehow
+            var latLng = getLatLngForCountry(country.name); // Placeholder function
+            return [latLng.lat, latLng.lng, country.count];
+          });
+          L.heatLayer(heatPoints, { radius: 25 }).addTo(map);
+        });
+      });
+
+    // Placeholder function to get lat/lng for a country
+    function getLatLngForCountry(countryName) {
+      // You need to implement a proper way to get lat/lng for each country
+      var countryLatLng = {
+        'France': { lat: 46.603354, lng: 1.888334 },
+        'Germany': { lat: 51.165691, lng: 10.451526 },
+        // Add other countries here
+      };
+      return countryLatLng[countryName] || { lat: 0, lng: 0 };
+    }
+  </script>
+</body>
+</html>
