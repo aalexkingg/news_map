@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Boolean variable to toggle sidebar feature
   const enableSidebarFeature = true;
+  const isMobile = window.innerWidth <= 768;
 
   // Function to set transparent style
   function setTransparentStyle(feature) {
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Highlight the clicked country
     layer.setStyle(setHighlightStyle());
 
-    // Update sidebar content
+    // Update sidebar or modal content
     const infoContent = `
       <h3>${feature.properties.name}</h3>
       <ul>
@@ -64,10 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Random fact 3</li>
       </ul>
     `;
-    document.getElementById('info-content').innerHTML = infoContent;
 
-    if (enableSidebarFeature) {
-      showSidebar();
+    if (isMobile) {
+      showModal(infoContent);
+    } else {
+      document.getElementById('info-content').innerHTML = infoContent;
+      if (enableSidebarFeature) {
+        showSidebar();
+      }
     }
   }
 
@@ -88,6 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
     mapContainer.classList.add('full');
     sidebarVisible = false;
   }
+
+  // Function to show modal
+  function showModal(content) {
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    modalContent.innerHTML = content;
+    modal.style.display = "block";
+  }
+
+  // Function to close modal
+  window.closeModal = function() {
+    const modal = document.getElementById('modal');
+    modal.style.display = "none";
+  };
 
   fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
     .then(response => response.json())
@@ -110,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       geojsonLayer.resetStyle(lastClickedLayer);
       lastClickedLayer = null;
       document.getElementById('info-content').innerHTML = 'Click on a country to see information here.';
-      if (enableSidebarFeature) {
+      if (enableSidebarFeature && !isMobile) {
         hideSidebar();
       }
     }

@@ -19,6 +19,15 @@
       </div>
     </div>
   </div>
+  <!-- Modal for mobile view -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <div id="modal-content">
+        <!-- Country info will be inserted here -->
+      </div>
+    </div>
+  </div>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
